@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html ng-app="eventsApp" lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Austin Agbo" />
+    <meta name="description" content="Events nearest to you" />
+    <meta name="keywords" content="A node.js application that streams events from a popular API" />
+	<meta property="fb:app_id" content="1615302532081189" />
+    <title>Events API Streamer</title>
+	<link href="dist/css/bootstrap.min.css" rel="stylesheet"><!--
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">-->
+	<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+	</script>
+	<script type="text/javascript" src="http://api.eventful.com/js/api"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+	<!--<script src="dist/js/bootstrap.min.js"></script>-->
+	<script src="scripts/fblogin.js"></script>
+	<script src="scripts/showbiz.js"></script>
+	<script src="scripts/fbhandle.js"></script>
+</head>
+<body ng-controller="MainCtrl" data-spy="scroll" data-target=".navbar" data-offset="50">
+	<header>
+		<br />
+		<br />
+		<br />
+		 <div class="col-sm-1">
+        Your Location:
+		<section id="locationInfo" > 
+			</section>
+		</div>
+		<br />
+		<center>
+			<img src="performance.jpg" class="img-rounded" alt="Performance" width="304" height="236">
+		</center>
+	</header>
+	<!-- The navbar - The <a> elements are used to jump to a section in the scrollable area -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+	  <ul class="nav navbar-nav">
+	    <li><a href="#section1">Search</a></li>
+		<li><a href="#section2">Events</a></li>
+		<li><a href="#section3">Comments</a></li>
+	</nav>
+
+	<!-- Section 1 -->
+	<div id="section1">
+	</div>
+	
+	<div class="container-fluid">
+		<div class="jumbotron">
+	<div id="fb-root"></div>
+	  <fb:login-button autologoutlink="true" show-faces="true" max-rows="1" 
+	  size="large"></fb:login-button>
+			<div id="status">
+			</div>		
+			
+	<h1 id="result">Search for events in your Area</h1>
+	<form name="myForm" ng-submit="submitData()">
+		<div class="form-group">
+		<fieldset>
+			<legend>Make your choice</legend>
+			  <div class="row-sm-2">
+			
+		    <div class="col-sm-2" style="background-color:lavender;">
+				<label for="Category">Category</label>
+				<select id="category">
+					<option value="All">All</option>
+					<option value="Concert">Concert</option>
+					<option value="Comedy">Comedy</option>
+					<option value="Festivals">Festivals</option>
+					<option value="Film">Film</option>
+					<option value="Galleries">Galleries</option>
+					<option value="Performing Arts">Performing Arts</option>
+					<option value="Literary">Literary</option>
+				</select>
+			</div>
+			
+			<div class="col-sm-2"  style="background-color:lavender;">
+			
+			<label for="Events_Number">Events Number</label>
+			<select id="eventsno">
+			  <option value="20">20</option>
+			  <option value="40">40</option>
+			  <option value="60">60</option>
+			  <option value="80">80</option>
+			  <option value="100">100</option>
+			</select>
+			
+			</div>
+			
+			<div class="col-sm-4" style="background-color:lavender;">
+			<label for="Venues">Venues </label>
+			<select id="venue">
+				<option value="All">All</option>
+			</select>
+			</div>
+			
+			<div class="col-sm-4"  style="background-color:lavender;">
+			<label for="Proximity_Range">Proximity Range</label>
+			<input id="points" type="range" min="10" max="100" step="10" value="100">
+			</div>
+			  </div>
+			</div>
+			
+			<button onclick="refresher()" id="on" type="submit" class="btn btn-success btn-lg btn-block">
+				 <span class="glyphicon glyphicon-flash"></span> Submit!
+		    </button>
+		</fieldset>
+		</div>
+		</form>
+
+	<!-- Section 2 -->
+	<div id="section2">
+	</div>
+
+<h2>Here are events in your area, toggle b/w events :) </h2>
+		<div class="fb-like" 
+		data-href="http://localhost:8080/#section2"
+		data-layout="standard" 
+		data-action="like" 
+		data-show-faces="true" 
+		data-share="true">
+
+	</div>
+	
+	<div class="container">
+		<h2>Event Description</h2>
+		<ul class="list-group">
+			<em><li class="list-group-item" ng-bind = 'event.description'></li> </em>
+			<address>
+				<strong>
+					<li class="list-group-item" ng-bind = 'event.venue_name'></li>
+				</strong>
+				<li class="list-group-item" ng-bind = 'event.venue_address'></li>
+			</address>
+				<li class="list-group-item" ><div class="well well-sm"><a ng-bind = 'event.venue_url'></a></div></li>
+				<li class="list-group-item" ng-bind = 'event.start_time'></li> 
+			</ul>
+			<div class="btn-group">
+			<button class="btn btn-primary" ng-click="prevEvent()">Prev</button>
+			<button class="btn btn-primary" ng-click="nextEvent()">Next</button>
+			<div>
+	
+	<br />
+	<br />
+	<br />
+	<br />
+	
+	<!-- Section 3 -->
+	<div id="section3">
+	</div>
+	<div class="row">
+	    <div class="col-sm-12" style="background-color:lavender;">
+	<div class="fb-comments" 
+	data-href="http://localhost:8080/" 
+	data-numposts="5"
+	data-colorscheme="light">
+</div>
+</div>
+</div>
+<div class="well-large">
+	<footer>
+		<p>&copy; Copyright University of Surrey
+		<br />
+		All rights reserved
+		</p>
+	</footer>
+</div>
+</body>
+</html>

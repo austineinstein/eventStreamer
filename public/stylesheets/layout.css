@@ -1,0 +1,23 @@
+body {
+    background-color: #e0ffff;
+	margin-top: 2%;
+	margin-bottom: 2%;
+	margin-right: 5%;
+	margin-left: 5%;
+}
+
+h1 {
+    background: url('/images/environment.jpg') repeat center center; width:1000;
+	text-shadow: green 0.1em 0.1em 0.1em;
+}
+
+
+h2 {
+    color: rgb(100,0,0);
+}
+
+.jumbotron{
+	margin-right: 6%;
+	margin-left: 6%;
+	background:transparent;
+}
